@@ -1,4 +1,4 @@
-#include <main.h>
+#include "main.h"
 
 int setup_gpio(void)
 {
@@ -20,15 +20,17 @@ int readADC()
 	buffer[0] = 1;
 	buffer[1] = 0b10000000;//read from chan0
 	wiringPiSPIDataRW(SPI_CHAN, buffer, 3);
-	return((buffer[1]&2)<<8)+buffer[2];
+	return((buffer[1]&3)<<8)+buffer[2];
 }
 
 int main()
 {
-	if(setup_gpio()==-1){
+	if(setup_gpio()==-1)
+	{
 		printf("Yoo shem it is broken");
         return 0;
+	}
     int output = readADC();
-    printf("Output: %d", output);
+    printf("Output: %d\n", output);
 	return 0;
 }
